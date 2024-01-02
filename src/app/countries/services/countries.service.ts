@@ -11,6 +11,14 @@ export class CountriesService {
 
     constructor(private http: HttpClient) { }
 
+    private getCountriesRequest( url: string ): Observable<Country[]> {
+        return this.http.get<Country[]>( url )
+        .pipe(
+            catchError( () => of([]) ),
+            // delay( 2000 ),
+        );
+    }
+
     searchCountryByAlphaCode(code:string):Observable<Country | null>{
         const url = `${ this.apiUrl }/alpha/${ code }`;
         return this.http.get<Country[]>( url )
@@ -25,33 +33,28 @@ export class CountriesService {
         //return this.http.get<Country[]>(`${this.apiUrl}/capital/san`)
         //ó esto:
         const url = `${ this.apiUrl }/capital/${ term }`;
-        return this.http.get<Country[]>( url )
-          .pipe(
-            //1
-            //tap(countries => console.log('Pasop por el TAP', countries))
-            //2
-            /*catchError(error=>{
-                console.log(error);
-                return of([])
-            })*/
-            //3
-            catchError( () => of([]) )
-        );
+        //return this.http.get<Country[]>( url )
+            //.pipe(
+                //1
+                //tap(countries => console.log('Pasop por el TAP', countries))
+                //2
+                //catchError(error=>{
+                //    console.log(error);
+                //    return of([])
+                //})
+                //3
+                //catchError(( ) => of([]))
+            //);
+        return this.getCountriesRequest(url);
     }
     searchCountry( term: string ): Observable<Country[]> {
         const url = `${ this.apiUrl }/name/${ term }`;
-        return this.http.get<Country[]>( url )
-        .pipe(
-            catchError( () => of([]) )
-        );
+        return this.getCountriesRequest(url);
     }
     
     searchRegion( region: string ): Observable<Country[]> {
         const url = `${ this.apiUrl }/region/${ region }`;
-        return this.http.get<Country[]>( url )
-        .pipe(
-            catchError( () => of([]) )
-        );
+        return this.getCountriesRequest(url);
     }
     
 }
