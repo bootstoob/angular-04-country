@@ -22,6 +22,9 @@ export class CountryPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params
+    .pipe(
+      switchMap( ({ id }) => this.countriesService.searchCountryByAlphaCode( id )),
+    )
     /*
     .subscribe( ({params:any})=> {
       console.log({params:params['id']})
@@ -36,11 +39,20 @@ export class CountryPageComponent implements OnInit {
       
     );
     */
+    /*
     .subscribe( ({id})=> {
       this.countriesService.searchCountryByAlphaCode(id)
       .subscribe(country=>{
         console.log({country})
       });
+    });
+    */
+    .subscribe( country => {
+      console.log({country})
+      if ( !country ) 
+        return this.router.navigateByUrl('');
+      console.log('TENEMOS UN COUNTRY');
+      return this.country = country;
     });
   }
 }
