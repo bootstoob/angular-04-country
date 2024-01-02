@@ -10,6 +10,14 @@ export class CountriesService {
     private apiUrl:string = 'https://restcountries.com/v3.1';
 
     constructor(private http: HttpClient) { }
+
+    searchCountryByAlphaCode(code:string):Observable<Country[]>{
+        const url = `${ this.apiUrl }/alpha/${ code }`;
+        return this.http.get<Country[]>( url )
+        .pipe(
+            catchError( () => of([]) )
+        );
+    }
     
     searchCapital( term:string ):Observable<Country[]>{
         //esto:
