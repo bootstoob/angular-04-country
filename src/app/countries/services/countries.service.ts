@@ -47,6 +47,7 @@ export class CountriesService {
             //);
         return this.getCountriesRequest(url);
     }
+    
     searchCountry( term: string ): Observable<Country[]> {
         const url = `${ this.apiUrl }/name/${ term }`;
         return this.getCountriesRequest(url);
